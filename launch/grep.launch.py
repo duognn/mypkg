@@ -3,6 +3,7 @@ import launch_ros.actions
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 
+
 def generate_launch_description():
     return launch.LaunchDescription([
         DeclareLaunchArgument(
@@ -10,7 +11,6 @@ def generate_launch_description():
             default_value='ros',
             description='Word to filter'
         ),
-        
         launch_ros.actions.Node(
             package='simple_grep',
             executable='pattern_filter',

@@ -5,6 +5,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 
+
 class PatternFilter(Node):
     def __init__(self):
         super().__init__('pattern_filter')
@@ -17,9 +18,11 @@ class PatternFilter(Node):
         self.subscription
 
     def listener_callback(self, msg):
-        target = self.get_parameter('target_word').get_parameter_value().string_value
+        target = \
+            self.get_parameter('target_word').get_parameter_value().string_value
         if target in msg.data:
             print(msg.data, flush=True)
+
 
 def main():
     rclpy.init()
@@ -30,6 +33,7 @@ def main():
         pass
     node.destroy_node()
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()
