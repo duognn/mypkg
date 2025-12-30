@@ -1,0 +1,38 @@
+name: build_and_test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-22.04
+    container:
+      image: osrf/ros:humble-desktop
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          path: src/simple_grep
+
+      - name: Install dependencies
+        run: |
+          apt-get update
+          rosdep update
+          rosdep install --from-paths src --ignore-src -y
+
+      - name: Build package
+        run: |
+          . /opt/ros/humble/setup.sh
+          colcon build --packages-select simple_grep
+
+      - name: Run tests
+        run: |
+          . /opt/ros/humble/setup.sh
+          colcon test --packages-select simple_grep
+
+      - name: Check test results
+        run: |
+          colcon test-result --verbose
