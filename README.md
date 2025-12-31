@@ -46,7 +46,6 @@ ros 2 is cool      # Output appears in Terminal 1!
 ```
 Check Result: Look back at Terminal 1. You should see the filtered lines:
 ```bash 
-[INFO] ...: hello ros world
 [INFO] ...: i love ros
 [INFO] ...: ros 2 is cool
 ```
