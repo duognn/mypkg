@@ -15,6 +15,7 @@ This package demonstrates a simple implementation of the "grep" command using RO
 ---
 ## Installation
 ```bash
+ cd ~/ros2_ws/src
  git clone https://github.com/duognn/mypkg.git
  cd ~/ros2_ws
  colcon build --packages-select mypkg
