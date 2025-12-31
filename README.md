@@ -1,6 +1,7 @@
 # mypkg
 [![Build Status](https://github.com/duognn/simple_grep/actions/workflows/test.yml/badge.svg)](https://github.com/duognn/simple_grep/actions/workflows/test.yml)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+
 A text filtering package for ROS 2.
 ---
 ## Description
@@ -14,8 +15,7 @@ This package demonstrates a simple implementation of the "grep" command using RO
 ---
 ## Installation
 ```bash
- cd ~/ros2_ws/src
- git clone [https://github.com/duognn/mypkg.git](https://github.com/duognn/mypkg.git)
+ git clone https://github.com/duognn/mypkg.git
  cd ~/ros2_ws
  colcon build --packages-select mypkg
  source install/setup.bash
@@ -28,17 +28,28 @@ You need two terminals to run this system.
 
 Start the filter node. It waits for incoming text.
 ```bash
-$ ros2 run mypkg pattern_filter
+ ros2 run mypkg pattern_filter
 ```
-Note: The default target word is "ros".
+Note: After running this command, nothing will happen on the screen. The node is waiting for incoming data. Keep this terminal open and visible.
 
 *Terminal 2: Publisher
 
-Send text via standard input.
+Run the publisher:
 ```bash
- echo "Hello ROS World" | ros2 run mypkg stream_publisher
+ ros2 run mypkg stream_publisher
 ```
-
+Type words and press Enter:
+```bash
+this is a test     # No output in Terminal 1
+i love ros         # Output appears in Terminal 1!
+ros 2 is cool      # Output appears in Terminal 1!
+```
+Check Result: Look back at Terminal 1. You should see the filtered lines:
+```bash 
+[INFO] ...: hello ros world
+[INFO] ...: i love ros
+[INFO] ...: ros 2 is cool
+```
 ## License
 
 本ソフトウェアは BSD 3-Clause License のもとで公開されています。
