@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2025 Duong Huyen
+# SPDX-License-Identifier: BSD-3-Clause
+
 import launch
 import launch_ros.actions
 from launch.actions import DeclareLaunchArgument
