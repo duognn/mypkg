@@ -48,8 +48,8 @@ ros2 launch simple_grep grep.launch.py target_word:=hello
 ```bash
 ros2 run simple_grep stream_publisher
 ```
-```bash
 ターミナル 2 / Terminal 2（Filter）:
+```bash
 ros2 run simple_grep pattern_filter --ros-args -p target_word:=hello
 ```
 標準入力に入力したテキストのうち、
@@ -57,16 +57,6 @@ ros2 run simple_grep pattern_filter --ros-args -p target_word:=hello
 Only lines containing the target keyword
 will be displayed in the filter node.
 
----
-
-## テスト / Testing
-
-GitHub Actions により自動テストを実行しています。
-This package includes automated tests verified by GitHub Actions.
-```bash
-colcon test --packages-select simple_grep
-colcon test-result --verbose
-```
 ---
 
 ## ライセンス / License
