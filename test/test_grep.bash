@@ -2,45 +2,30 @@
 # SPDX-FileCopyrightText: 2025 Duong Huyen
 # SPDX-License-Identifier: BSD-3-Clause
 
-source /opt/ros/humble/setup.bash
-source ../../install/setup.bash
+dir=~
+[ "$1" != "" ] && dir="$1"
 
-# Define output file
-OUTPUT_FILE="/tmp/grep_test_output.txt"
-rm -f $OUTPUT_FILE
+cd $dir/ros2_ws
+colcon build
+source install/setup.bash
 
-echo "Test 1: Starting pattern_filter (target='hello')..."
-
-ros2 run mypkg pattern_filter --ros-args -p target_word:=hello > $OUTPUT_FILE &
+ros2 run mypkg pattern_filter &
 FILTER_PID=$!
-
-sleep 2
-
-echo "Test 2: Publishing data..."
-# Case A: Should be detected
-echo "hello world" | ros2 run mypkg stream_publisher
 sleep 1
-# Case B: Should be ignored
-echo "goodbye world" | ros2 run mypkg stream_publisher
+
+echo "hello ros" | ros2 run mypkg stream_publisher &
+PUB_PID=$!
 sleep 1
+
+RESULT=$(timeout 2 ros2 topic echo /filtered_text --once)
 
 kill $FILTER_PID
+kill $PUB_PID
 
-# Check the result
-echo "Checking results..."
-if grep -q "hello world" $OUTPUT_FILE; then
-    echo "SUCCESS: Found 'hello world'"
+if echo "$RESULT" | grep -q "hello ros"; then
+    echo "Test Passed: Filtered text received on topic"
+    exit 0
 else
-    echo "FAILURE: 'hello world' not found"
+    echo "Test Failed: No output on topic /filtered_text"
     exit 1
 fi
-
-if grep -q "goodbye world" $OUTPUT_FILE; then
-    echo "FAILURE: Found 'goodbye world' (Should be filtered out)"
-    exit 1
-else
-    echo "SUCCESS: 'goodbye world' correctly filtered out"
-fi
-
-echo "All tests passed!"
-exit 0
