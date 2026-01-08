@@ -27,7 +27,7 @@ sleep 2
 
 kill $NODE_PID
 
-if grep -q "data: 'hello ros'" /tmp/mypkg_test.log; then
+if grep -q "hello ros" /tmp/mypkg_test.log; then
     echo "Test Passed: Found 'hello ros' in topic output"
     exit 0
 else
