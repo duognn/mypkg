@@ -8,18 +8,18 @@ from std_msgs.msg import String
 class PatternFilter(Node):
     def __init__(self):
         super().__init__('pattern_filter')
+        self.sub = self.create_subscription(String, 'text_stream', self.cb, 10)
+        self.pub = self.create_publisher(String, 'filtered_text', 10)
+        
         self.declare_parameter('target_word', 'ros')
-        self.subscription = self.create_subscription(
-            String,
-            'text_stream',
-            self.listener_callback,
-            10)
-        self.subscription
 
-    def listener_callback(self, msg):
+    def cb(self, msg):
         target = self.get_parameter('target_word').get_parameter_value().string_value
         if target in msg.data:
-            print(msg.data, flush=True)
+            out_msg = String()
+            out_msg.data = msg.data
+            self.pub.publish(out_msg)
+            self.get_logger().info(f"Forwarded: {msg.data}")
 
 def main():
     rclpy.init()
