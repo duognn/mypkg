@@ -17,4 +17,4 @@ jobs:
           colcon build --packages-select mypkg
           source install/setup.bash
           cd src/mypkg
-          bash ./test_grep.bash
+          bash ./test/test_grep.bash
