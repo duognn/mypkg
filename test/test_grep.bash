@@ -9,7 +9,7 @@ if [ -d "/root/ros2_ws" ]; then
 elif [ -d "$HOME/ros2_ws" ]; then
     cd $HOME/ros2_ws
 else
-    echo "Error: Could not find ros2_ws directory!"
+    echo "Error: Workspace not found"
     exit 1
 fi
 
@@ -17,23 +17,22 @@ colcon build
 source install/setup.bash
 
 ros2 run mypkg pattern_filter &
-FILTER_PID=$!
-sleep 2  
+NODE_PID=$!
+sleep 1
 
-echo "hello ros" | ros2 run mypkg stream_publisher &
-PUB_PID=$!
+timeout 10 ros2 topic echo /filtered_text > /tmp/mypkg_test.log &
+sleep 2 
+echo "hello ros" | ros2 run mypkg stream_publisher
 sleep 2
 
-RESULT=$(timeout 5 ros2 topic echo /filtered_text --once)
+kill $NODE_PID
 
-kill $FILTER_PID
-kill $PUB_PID
-
-if echo "$RESULT" | grep -q "hello ros"; then
-    echo "Test Passed: Correct output received"
+if grep -q "data: 'hello ros'" /tmp/mypkg_test.log; then
+    echo "Test Passed: Found 'hello ros' in topic output"
     exit 0
 else
-    echo "Test Failed: Expected 'hello ros', but got nothing or wrong data"
-    echo "Debug info: Result was: $RESULT"
+    echo "Test Failed: 'hello ros' not found in topic output"
+    echo "--- Debug: Content of /tmp/mypkg_test.log ---"
+    cat /tmp/mypkg_test.log
     exit 1
 fi
