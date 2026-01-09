@@ -18,10 +18,14 @@ This package reads text from stdin, filters lines containing a keyword, and repu
 ---
 ## Usage
 ### 1. Build
+Clone the repository into your workspace `src` directory and build it.
+(e.g. `cd ~/ros2_ws/src`):
 ```bash
- git clone https://github.com/duognn/mypkg.git
- colcon build --packages-select mypkg
- source install/setup.bash
+cd <your_ros2_workspace>/src
+git clone https://github.com/duognn/mypkg.git
+cd ..
+colcon build --packages-select mypkg
+source install/setup.bash
 ```
 ---
 ### 2. Run
